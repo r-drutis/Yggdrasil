@@ -13,21 +13,14 @@ public class Cluster {
 		// Generate array of leaf nodes to be clustered
 		for (int i=0; i<sequences.size(); i++) {
 			this.nodes.add(i, new Leaf(i, sequences.get(i)));	// The index corresponds to its place in its dissimilarity matrix
-			System.out.println("NODE CHECK POSITION: " + this.nodes.get(i).getPos());											// and will be clustered along with the indices of the matrix
+																// and will be clustered along with the indices of the matrix
 		}
 		
 	}
 	
 	// Clusters the nearest nodes into a branch node 
 	private void clusterNodes(ArrayList<Integer> nodePair) {
-		
-		for (int i=0; i<nodePair.size(); i++) {
-			System.out.println("Nodepair: " + nodePair.get(i));
-			System.out.println("TEST: " + this.nodes.get(i).getPos());
-		}
-		
-		
-		
+										
 		Node child1 = this.nodes.get(nodePair.get(0));	// closest node pair
 		Node child2 = this.nodes.get(nodePair.get(1));
 		
@@ -123,12 +116,7 @@ public class Cluster {
 							jskew = 0;
 						}
 						if(!pair.contains(j)) {
-							// Reposition remaining values into new matrix
-							System.out.println("Old Matrix Size: " + distMatrix.length);
-							System.out.println("New Matrix Size: " + joinedMatrix.length);
-							System.out.println("I and J: " + i + " " + j);
-							System.out.println("Iskew and Jskew: " + iskew + " " + jskew);
-							System.out.println("Joined coordinates: " + (i+iskew) + " " + (j+jskew));
+							// Reposition remaining values into new matrix							
 							joinedMatrix[i+iskew][j+jskew] = distMatrix[i][j];					
 						}
 						
@@ -137,13 +125,6 @@ public class Cluster {
 				}			
 						
 			}
-			for (int i=0; i<cSize-1; i++) {
-				for (int j=i+1; j<cSize-1; j++) {
-					System.out.println("i: " + i + " j: " + j + " Value: " + joinedMatrix[i][j]);
-				}
-			}
-			System.out.println("cluster: " + pair.get(0) + " " + pair.get(1));
-			System.out.println("NEXT");
 			joinNearest(joinedMatrix);
 		}
 		

@@ -8,12 +8,13 @@
 </head>
 <body>
 	Select a FASTA format file to upload
+
+		<form method="post" action="${pageContext.request.contextPath}/FastaReader" encType="multipart/form-data">
+			<input type="file" name="file" value="Select fasta file" />
+			<input type="submit" value="Start upload" />	
+		</form>
+
 	
-	<form method="post" action="${pageContext.request.contextPath}/FastaReader" encType="multipart/form-data">
-		<input type="file" name="file" value="Select fasta file" />
-		<input type="submit" value="Start upload" />
-	
-	</form>
 
 </body>
 </html>

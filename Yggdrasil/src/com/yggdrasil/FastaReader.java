@@ -107,7 +107,6 @@ public class FastaReader extends HttpServlet {
 		 out.println("Clustering your sequences...");
 		 
 		 DisMatrix dmatrix = new DisMatrix(sequenceList);	// Generate a dissimilarity Matrix
-		 dmatrix.debug();
 		 double[][] scores = dmatrix.calcScores();
 			
 		 Cluster cluster = new Cluster(sequenceList); // Cluster nearest neighbors in matrix

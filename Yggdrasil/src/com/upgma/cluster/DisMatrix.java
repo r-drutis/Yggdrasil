@@ -43,7 +43,7 @@ public class DisMatrix {
 				seq1_data = sequences.get(i).getSequence();
 				seq2_data = sequences.get(j).getSequence();
 				dis_score[i][j] = calcDistance(seq1_data, seq2_data);
-				System.out.println(i +"," + j +": " + dis_score[i][j]);
+				
 			}		
 		}
 		return dis_score;
