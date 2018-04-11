@@ -14,4 +14,7 @@ public class DNASequence {
 	public String getSequence(){
 		return this.sequence;
 	}
+	public String getHeader(){
+		return this.header;
+	}
 }

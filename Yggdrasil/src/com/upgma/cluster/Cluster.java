@@ -71,8 +71,8 @@ public class Cluster {
 	
 	
 	// Join nearest neighbors and generate new matrix with cluster
-	public void joinNearest(double[][] distMatrix) {
-		
+	public String joinNearest(double[][] distMatrix) {
+		String output;
 		int cSize = distMatrix.length;
 		double[][] joinedMatrix = new double[cSize-1][cSize-1];	// new matrix with nearest neighbors clustered
 
@@ -83,12 +83,13 @@ public class Cluster {
 
 		// Base case for recursive function
 		if (joinedMatrix.length == 1) {
-			System.out.print("(");
+			StringBuilder newick = new StringBuilder();
+			newick.append("(");
 			for(int i=0; i<nodes.size(); i++) {
-				System.out.print(nodes.get(i).getPos());
+				newick.append(nodes.get(i).getPos());
 			}
-			System.out.print(")");
-			return;
+			newick.append(")");
+			return newick.toString();
 		}
 		// Otherwise, recursively cluster the closest nodes
 		else {
@@ -125,7 +126,8 @@ public class Cluster {
 				}			
 						
 			}
-			joinNearest(joinedMatrix);
+			output = joinNearest(joinedMatrix);
+			return output;
 		}
 		
 	}							
