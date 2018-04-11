@@ -4,11 +4,29 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<script type="text/javascript" src="js/raphael/raphael-min.js" ></script>
+	<script type="text/javascript" src="js/jsphylosvg-min.js"></script>
+
+	
+	<script type="text/javascript">	
+	window.onload = function(){
+		
+			var dataObject = { newick: '${sessionScope.newick}' };
+			phylocanvas = new Smits.PhyloCanvas(
+				dataObject,
+				'svgCanvas',
+				500, 500
+			);	
+	};
+	</script>
+	
+		
+<title>UPGMA Tree</title>
 </head>
 <body>
-
+	<div id="svgCanvas"> </div>
+	
 	<p>Your newick format is: <c:out value="${sessionScope.newick}" /></p>
 
 	<p>Your sequences are: </p>

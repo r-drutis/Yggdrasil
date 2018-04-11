@@ -88,7 +88,7 @@ public class Cluster {
 			for(int i=0; i<nodes.size(); i++) {
 				newick.append(nodes.get(i).getPos());
 			}
-			newick.append(")");
+			newick.append(");");
 			return newick.toString();
 		}
 		// Otherwise, recursively cluster the closest nodes
