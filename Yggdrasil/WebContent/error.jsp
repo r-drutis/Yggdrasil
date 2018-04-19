@@ -4,9 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Error!</title>
+<style>
+
+	body {
+    	background-color: #e5e8d7;
+	}
+
+</style>
 </head>
 <body>
-Error
+	<h1><span style="font-family: monospace;">Error!</span></h1>
+	-----------------------------<br/>
+	<p><span style="font-family: monospace;">Are you sure you chose a set of sequences to mutate?</span><p>
 </body>
 </html>
