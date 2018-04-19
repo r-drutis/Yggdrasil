@@ -46,7 +46,7 @@
 		<h1><span style="font-family: monospace;">Yggdrasil Phylogenetics Tool</span></h1>
 	
 
-		<p>Select a FASTA format file to upload</p>
+		<p>Select a FASTA format file to upload <a href="${pageContext.request.contextPath}/FastaReader?action=about">Usage Page</a></p>
 
 		<form method="post" action="${pageContext.request.contextPath}/FastaReader" encType="multipart/form-data">
 			<input type="file" name="file" value="Select fasta file" accept=".txt, .fa, .fasta" />
