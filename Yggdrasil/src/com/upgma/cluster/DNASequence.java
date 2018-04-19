@@ -118,8 +118,9 @@ public class DNASequence {
 			// Otherwise, no mutation occurs
 			else {
 				mutSeq.append(sequence.charAt(i));
-			}		 
+			}			
     	}
+		sequence = mutSeq.toString();
 		header += " Mutant";
 		
 	}

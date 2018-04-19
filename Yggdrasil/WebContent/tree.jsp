@@ -23,7 +23,11 @@
 	};
 	</script>
 	
-		
+<style>
+	body {
+    	background-color: #e5e8d7;
+	}
+</style>		
 <title>UPGMA Tree</title>
 </head>
 <body>
