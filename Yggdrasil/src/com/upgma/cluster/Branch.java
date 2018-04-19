@@ -14,6 +14,11 @@ public class Branch extends Node {
 		String pos = "(" + branch1.getPos() + "," + branch2.getPos() + ")";
 		return pos;
 	}
-
+	
+	@Override
+	public String getID() {
+		String id = branch1.getID() + "," + branch2.getID();
+		return id;
+	}
 	
 }

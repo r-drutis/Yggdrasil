@@ -44,7 +44,8 @@ public class Cluster {
 	private ArrayList<Integer> findMin(double[][] dmatrix){
 		ArrayList<Integer> closePair = new ArrayList<Integer>();
 		closePair.add(0);
-		closePair.add(1);
+		closePair.add(1);	// Make the pair
+		
 		double minDistance = Integer.MAX_VALUE;	// Minimum non-zero distance in dissimilarity matrix
 		int mSize = dmatrix.length;
 		
@@ -87,7 +88,9 @@ public class Cluster {
 			newick.append("(");
 			for(int i=0; i<nodes.size(); i++) {
 				newick.append(nodes.get(i).getPos());
+				newick.append(",");
 			}
+			newick.setLength(newick.length() - 1); // Gets rid of unneeded comma at the end
 			newick.append(");");
 			return newick.toString();
 		}

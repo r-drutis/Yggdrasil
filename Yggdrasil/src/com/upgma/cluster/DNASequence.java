@@ -14,7 +14,13 @@ public class DNASequence {
 	public String getSequence(){
 		return this.sequence;
 	}
+	public void setSequence(String newSequence) {
+		this.sequence = newSequence;
+	}
 	public String getHeader(){
 		return this.header;
+	}
+	public void setHeader(String newHeader){
+		this.header = newHeader;
 	}
 }
