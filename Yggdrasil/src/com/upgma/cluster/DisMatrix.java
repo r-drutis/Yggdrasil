@@ -2,6 +2,17 @@ package com.upgma.cluster;
 
 import java.util.ArrayList;
 
+
+/**
+ * Dissimilarity Matrix Class
+ * 
+ * This class generates a dissimilarity matrix based on the hamming distance between two DNA sequences
+ * The hamming distance is simply the number of differences between the sequences
+ * For example, two sequences "AAAA" and "AAAT" would have a hamming distance of 1
+ * 
+ * Comparison of sequences proceeds pairwise (each sequence is compared to each other sequence)
+ * @param seqEntries:	A list of DNASequences
+ */
 public class DisMatrix {
 	ArrayList<DNASequence> sequences = new ArrayList<DNASequence>();
 	double[][] dis_score;
@@ -13,12 +24,17 @@ public class DisMatrix {
 		this.dis_score = new double[sequences.size()][sequences.size()];
 		
 	}
-	public void debug(){
-		for (int i = 0; i < sequences.size(); i++) {
-			sequences.get(i).getInfo();
-		}	
-	}
-	//compare strings of equal length
+
+	/**
+	 * Calculate the pairwise distance between two strings
+	 * This function calculates the hamming distance between two strings
+	 * The hamming distance is simply the number of differences between the sequences
+	 * 
+	 * If one sequence is longer than the other, the difference in length is added to the distance score
+	 * @param seq1:			The first string being compared
+	 * @param seq2:			The second string being compared
+	 * @return distance:	The number of differences between the two strings
+	 */
 	public double calcDistance(String seq1, String seq2){
 		double distance = 0;
 		char baseA;
@@ -26,7 +42,7 @@ public class DisMatrix {
 		
 		String shortest;
 		double difference;
-		
+		// Check if strings are different lengths
 		if (seq1.length() >= seq2.length()) {
 			shortest = seq2;
 			difference = seq1.length() - seq2.length();
@@ -35,7 +51,7 @@ public class DisMatrix {
 			shortest = seq1;
 			difference = seq2.length() - seq1.length();
 		}
-		
+		// For each mismatched base, add 1 to the distance score
 		for(int i =0; i < shortest.length(); i++){
 			baseA = seq1.charAt(i);
 			baseB = seq2.charAt(i);
@@ -44,11 +60,16 @@ public class DisMatrix {
 				distance++;
 			}						
 		}
-		distance += difference;
+		distance += difference;	// Add the length difference to the distance score
 		return distance;
 	}
 	
-	// Calculate dissimilarity scores (hamming distance)
+	/**
+	 * Generate a dissimilarity matrix
+	 * Populate a matrix of distance scores for each sequence pair
+	 * 
+	 * @return dis_score:	Matrix of dissimilarity scores
+	 */
 	public double[][] calcScores() {
 		String seq1_data;
 		String seq2_data;

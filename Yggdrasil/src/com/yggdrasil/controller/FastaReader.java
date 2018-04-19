@@ -139,12 +139,7 @@ public class FastaReader extends HttpServlet {
 	 * Accepts a list of DNA sequences selected by the user and randomly changes nucleotides 
 	 * based on the specified parameters. The chance that a mutation event
 	 * occurs is set by the user and is determined by generating a number between 1 and 100
-	 * A transition is a change between two purines or two pyrimidines
-	 * Purines (A <-> G) and Pyrimidines (C <-> T)
-	 * Whereas a transversion is a change between pyrimadine to purine and vice versa
-	 * For example, (A <-> T) and (A <-> C), (G <-> T) and (G <-> C)
-	 * 
-	 * This method checks each nucleotide individually and returns a new set of mutated sequences
+	 * This method returns a new set of mutated sequences
 	 * which are stored in the session object and displayed in the tree.jsp page
 	 * 
 	 * @param mutants:		Positions of sequences to mutate in session DNASequence list
@@ -154,89 +149,12 @@ public class FastaReader extends HttpServlet {
 	 * @return mutantList:	DNASequence list with mutant sequences
 	 */
     private ArrayList<DNASequence> generateMutants(String[] mutants, int rateMutation, int rateTrBias, ArrayList<DNASequence> seqsToMutate){
-    	ArrayList<DNASequence> mutantList = seqsToMutate;	
-    	Random rate = new Random();							// Probability of mutation
-    	StringBuilder mutSeq = new StringBuilder();			// New mutant sequence
-    	
-
+    	ArrayList<DNASequence> mutantList = seqsToMutate;	    	
     	// For each sequence the user chooses to mutate, calculate the the probability of a mutation event
-    	for (String seq : mutants){
-    		
-    		String currentSeq = mutantList.get(Integer.parseInt(seq)).getSequence();
-    		
-    		for(int i=0; i< currentSeq.length(); i++){ 
-    			
-    			//calculate probability of mutation event
-    			if (rateMutation >= rate.nextInt(100) + 1) {
-    				 
-    				// Mutation event occurs, calculate probability of transition or transversion
-    				
-    				//Transition event	
-    				if (rateTrBias >= rate.nextInt(100) + 1) {	
-    					// Interchange Purines (A <-> G) and Pyrimidines (C <-> T)
-    					if(currentSeq.charAt(i) == 'A') {
-    						mutSeq.append('G');
-    					}
-    					else if(currentSeq.charAt(i) == 'G') {
-    						mutSeq.append('A');
-    					}
-    					else if(currentSeq.charAt(i) == 'C') {
-    						mutSeq.append('T');
-    					}
-    					else if(currentSeq.charAt(i) == 'T') {
-    						mutSeq.append('C');
-    					}
-    				}
-    				//Transversion event
-    				
-    				// There are two possible transversion events for each nucleotide, selected randomly
-    				// For example, (A -> T) and (A -> C) are both possible
-    				else {
-    					// For our purposes, both are equally likely to happen
-    					if((rate.nextInt(2) + 1) == 1) {
-    						if(currentSeq.charAt(i) == 'A') {
-        						mutSeq.append('T');
-        					}
-        					else if(currentSeq.charAt(i) == 'G') {
-        						mutSeq.append('T');
-        					}
-        					else if(currentSeq.charAt(i) == 'C') {
-        						mutSeq.append('A');
-        					}
-        					else if(currentSeq.charAt(i) == 'T') {
-        						mutSeq.append('A');  
-        					}
-    					}else {
-    						if(currentSeq.charAt(i) == 'A') {
-        						mutSeq.append('C');
-        					}
-        					else if(currentSeq.charAt(i) == 'G') {
-        						mutSeq.append('C');
-        					}
-        					else if(currentSeq.charAt(i) == 'C') {
-        						mutSeq.append('G');
-        					}
-        					else if(currentSeq.charAt(i) == 'T') {
-        						mutSeq.append('G');  		
-        					}					
-    					}
-    				}	
-    			}
-    			// Otherwise, no mutation occurs
-    			else {
-    				mutSeq.append(currentSeq.charAt(i));
-    			}		 
-        	}
-    		
-    		mutantList.get(Integer.parseInt(seq)).setSequence(mutSeq.toString());
-    		mutantList.get(Integer.parseInt(seq)).setHeader(">MUTANT");
-  		
-    		mutSeq.setLength(0);
-    	}    	
-    	
-    	return mutantList;
-    	
-    	
+    	for (String seq : mutants){   		
+    		mutantList.get(Integer.parseInt(seq)).mutate(rateMutation, rateTrBias); 		
+    	}    	   	
+    	return mutantList;   	   	
     }
 
 	/**
@@ -251,7 +169,12 @@ public class FastaReader extends HttpServlet {
 	 * Servlet doPost method
 	 * 
 	 * This is the main method which handles requests from other pages.
+	 * The servlet accepts FASTA format file uploads from the homepage
+	 * If a file is not provided, a default fasta file is generated and used in its place
+	 * A tree is generated and session objects are created to store the newick file and DNASequence List
 	 * 
+	 * If called from tree.jsp, it will generate mutants for the specified DNASequences and forward back to tree.jsp
+	 * after having set the new sequences in the session object and generated a new tree
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -270,6 +193,8 @@ public class FastaReader extends HttpServlet {
 				FileItemFactory itemFactory = new DiskFileItemFactory();
 				ServletFileUpload upload = new ServletFileUpload(itemFactory);		        
 				List<FileItem> items = upload.parseRequest(request);
+				
+				// If a file is not chosen for upload, generate a default fasta
 				if (items.get(0).getSize() == 0) {
 		            DefaultFastaGenerator dfg = new DefaultFastaGenerator();
 		            fastaList = dfg.treesJoyceKilmer();

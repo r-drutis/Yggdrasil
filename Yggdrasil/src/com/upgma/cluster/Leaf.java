@@ -20,7 +20,7 @@ public class Leaf extends Node {
 	/**
 	 * Get Position
 	 * Returns the position of the DNA string
-	 * @return: Int representing the position of the DNA sequence in the list
+	 * @return:	String containing the DNA sequence header
 	 */
 	@Override
 	public String getPos() {
@@ -30,7 +30,7 @@ public class Leaf extends Node {
 	/**
 	 * Get ID
 	 * Returns the header of the DNA sequence stored in the leaf
-	 * @return:	String containing the DNA sequence header
+	 * @return: String representing the position of the DNA sequence in the list
 	 */
 	@Override
 	public String getID() {

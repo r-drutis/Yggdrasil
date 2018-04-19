@@ -2,11 +2,21 @@ package com.upgma.cluster;
 
 import java.util.ArrayList;
 
+/**
+ * Default Fasta Generator Class
+ * 
+ * Generates a default FASTA file if the user has not uploaded a FASTA file to process
+ * The FASTA File format is simply a text file format of DNA sequences as follows:
+ * 
+ * ">Header"
+ * "Sequence"
+ * 
+ */
 public class DefaultFastaGenerator {
 	
 	public DefaultFastaGenerator() {
     }
-	
+
 	public ArrayList<DNASequence> treesJoyceKilmer(){
 		ArrayList<DNASequence> defaultFasta = new ArrayList<DNASequence>();
 		

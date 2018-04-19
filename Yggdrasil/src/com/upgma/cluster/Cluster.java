@@ -4,7 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-
+/**
+ * Clustering class
+ * 
+ * In order to generate a UPGMA dendrogram, the sequences must be clustered based on their distance scores
+ * Using the dissimilarity matrix, the sequences with the lowest distance are chosen and clustered together
+ * The distances to remaining sequences are then calculated using the arithmetic mean
+ * 
+ * This is done so recursively, generating branching nodes of the dendrogram, and creating a string representation
+ * called the newick format:
+ * 
+ * Example: ((a,b)(c,d))
+ * @param sequence:	A list of DNA sequences to cluster together
+ */
 public class Cluster {
 	ArrayList<Node> nodes = new ArrayList<Node>();
 		
@@ -18,7 +30,11 @@ public class Cluster {
 		
 	}
 	
-	// Clusters the nearest nodes into a branch node 
+	/**
+	 * Node clustering method
+	 * Creates a branch node based on the two sequences with smallest distance
+	 * @param nodePair:	A set of two ints denoting the two closest sequences
+	 */ 
 	private void clusterNodes(ArrayList<Integer> nodePair) {
 										
 		Node child1 = this.nodes.get(nodePair.get(0));	// closest node pair
@@ -40,7 +56,13 @@ public class Cluster {
 
 	}
 	
-	// Find the minimum distance in the dissimilarity matrix
+	/**
+	 * Minimum Finding
+	 * Iterate through the distance matrix and find the pair of sequences with the lowest distance score
+	 * 
+	 * @param dmatrix:		The dissimilarity matrix
+	 * @return closePair: 	The pair of closest sequences
+	 */
 	private ArrayList<Integer> findMin(double[][] dmatrix){
 		ArrayList<Integer> closePair = new ArrayList<Integer>();
 		closePair.add(0);
@@ -71,7 +93,21 @@ public class Cluster {
 	}
 	
 	
-	// Join nearest neighbors and generate new matrix with cluster
+	/**
+	 * Neighbor Joining Clustering Method
+	 * Sequences with the lowest distance scores are clustered together in order to generate a dendrogram
+	 * After clustering two sequences together, a new dissimilarity matrix is created in which
+	 * the two sequences are removed, and a "cluster" is added in their place with an adveraged distance to the remaining
+	 * sequences. 
+	 * Node objects are created in tandem with the clustering.
+	 * 
+	 * This function is then called recursively until two clusters remain in the matrix.
+	 * The newick format string is then generated.
+	 * 
+	 * @param distMatrix: The distance matrix to cluster: this is called recursively, and sends in the processed matrix as the parameter
+	 * 						for the next function
+	 * @param output:		The newick format string
+	 */
 	public String joinNearest(double[][] distMatrix) {
 		String output;
 		int cSize = distMatrix.length;
