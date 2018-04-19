@@ -23,7 +23,20 @@ public class DisMatrix {
 		double distance = 0;
 		char baseA;
 		char baseB;
-		for(int i =0; i < seq1.length(); i++){
+		
+		String shortest;
+		double difference;
+		
+		if (seq1.length() >= seq2.length()) {
+			shortest = seq2;
+			difference = seq1.length() - seq2.length();
+		}
+		else {
+			shortest = seq1;
+			difference = seq2.length() - seq1.length();
+		}
+		
+		for(int i =0; i < shortest.length(); i++){
 			baseA = seq1.charAt(i);
 			baseB = seq2.charAt(i);
 			
@@ -31,6 +44,7 @@ public class DisMatrix {
 				distance++;
 			}						
 		}
+		distance += difference;
 		return distance;
 	}
 	

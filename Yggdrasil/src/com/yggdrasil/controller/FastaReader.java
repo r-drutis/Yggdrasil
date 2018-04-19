@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,9 +26,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.upgma.cluster.Cluster;
 import com.upgma.cluster.DNASequence;
+import com.upgma.cluster.DefaultFastaGenerator;
 import com.upgma.cluster.DisMatrix;
-
-import java.util.Random;
 
 
 /**
@@ -70,31 +70,34 @@ public class FastaReader extends HttpServlet {
 		Matcher m;
     	
         // Read text from file line by line 
-        for (FileItem item : fastaSeqs) {		            		                   
-            InputStream fileContent = item.getInputStream();		                
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));		                		           
-            String line;
+        for (FileItem item : fastaSeqs) {
+
+
+        		InputStream fileContent = item.getInputStream();		                
+            	BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));		                		           
+            	String line;
             
-            while ((line = reader.readLine()) != null) {
+            	while ((line = reader.readLine()) != null) {
                 
-            	m = p.matcher(line);	//Check if line is a header
+            		m = p.matcher(line);	//Check if line is a header
                 
-            	// If it's not a header, it's a sequence
-                if(m.lookingAt() == false){
-                	sequence.append(line);
-                }
-                else{
-                	// Create a new DNASequence object using the header and sequence
-                	if(seqNum != 0){
-                		sequenceList.add((seqNum-1), new DNASequence(header, sequence.toString())); 
-                		sequence.setLength(0);	// empty the sequence string for next sequence
+            		// If it's not a header, it's a sequence
+                	if(m.lookingAt() == false){
+                		sequence.append(line);
                 	}
-                	header = line;	// read in next header
-                	seqNum++;		                    	
-                }		                	  		                    		                   
-            }
-            // capture the final sequence
-            sequenceList.add((seqNum-1), new DNASequence(header, sequence.toString()));		  		            
+                	else{
+                		// Create a new DNASequence object using the header and sequence
+                		if(seqNum != 0){
+                			sequenceList.add((seqNum-1), new DNASequence(header, sequence.toString())); 
+                			sequence.setLength(0);	// empty the sequence string for next sequence
+                		}
+                		header = line;	// read in next header
+                		seqNum++;		                    	
+                	}		                	  		                    		                   
+            	}
+            	// capture the final sequence
+            	sequenceList.add((seqNum-1), new DNASequence(header, sequence.toString()));
+
         }        
         return sequenceList;
     }
@@ -226,8 +229,6 @@ public class FastaReader extends HttpServlet {
         	}
     		
     		mutantList.get(Integer.parseInt(seq)).setSequence(mutSeq.toString());
-    		System.out.println(mutantList.get(Integer.parseInt(seq)).getSequence());
-    		System.out.println(seqsToMutate.get(Integer.parseInt(seq)).getSequence());
     		mutantList.get(Integer.parseInt(seq)).setHeader(">MUTANT");
   		
     		mutSeq.setLength(0);
@@ -258,15 +259,20 @@ public class FastaReader extends HttpServlet {
 		
 		// If user is uploading a FASTA file, parse it and store the DNA sequences
 		if(ServletFileUpload.isMultipartContent(request)) {					
+	
 			try {
 				// Get uploaded file 
 				FileItemFactory itemFactory = new DiskFileItemFactory();
 				ServletFileUpload upload = new ServletFileUpload(itemFactory);		        
 				List<FileItem> items = upload.parseRequest(request);
-		        
-		        // Get sequences to be clustered from FASTA file 
-		        fastaList = readFasta(items);
-		        
+				if (items.get(0).getSize() == 0) {
+		            DefaultFastaGenerator dfg = new DefaultFastaGenerator();
+		            fastaList = dfg.treesJoyceKilmer();
+		        }
+				else{
+					// Get sequences to be clustered from FASTA file 
+					fastaList = readFasta(items);
+				}  		        
 		    } catch (FileUploadException e) {
 		        throw new ServletException("Cannot parse multipart request.", e);
 		    }
@@ -285,7 +291,7 @@ public class FastaReader extends HttpServlet {
 		}
 		
 		// Otherwise, the user is generating mutants using an already parsed fasta file
-		else {
+		else if (request.getParameterValues("mutate") != null) {
 			String[] checkedIds = request.getParameterValues("mutate");
 			
 			String[] mutRate = request.getParameterValues("mutRate");			
@@ -310,6 +316,11 @@ public class FastaReader extends HttpServlet {
 			dispatcher.forward(request,response);
 		}
 		
+		else {
+			String nextJSP = "/error.jsp";
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+			dispatcher.forward(request,response);
+		}
 		
 		
 	}

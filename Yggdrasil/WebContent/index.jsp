@@ -49,7 +49,7 @@
 		<p>Select a FASTA format file to upload</p>
 
 		<form method="post" action="${pageContext.request.contextPath}/FastaReader" encType="multipart/form-data">
-			<input type="file" name="file" value="Select fasta file" />
+			<input type="file" name="file" value="Select fasta file" accept=".txt, .fa, .fasta" />
 			<input type="submit" value="Start upload" />	
 		</form>
 	</center>
