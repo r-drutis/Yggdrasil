@@ -30,7 +30,7 @@
 	<div class="container-1">
   
   <div class="tree-box">
-    <h3>UPGMA Tree</h3>    
+    <h3><span style="font-family: monospace;">UPGMA Tree</span></h3>    
     <div id="svgCanvas"> </div> 
   </div>
   <div class="ui-box">
@@ -38,7 +38,7 @@
     
     <div class="sequencecontainer">
       <div class="name-box">
-      <h3> Names</h3>
+      <h3><span style="font-family: monospace;">Names</span></h3>
       
       <form name="mutate" action="${pageContext.request.contextPath}/FastaReader" method="post">
       
@@ -53,7 +53,7 @@
 
       </div>
       <div class="seq-box">
-        <h3>Sequences</h3>
+        <h3><span style="font-family: monospace;">Sequences</span></h3>
         <c:forEach items="${sessionScope.sequence}" var="item">
         	<c:set var="str" value="${item.sequence}"/>        
 
@@ -80,16 +80,15 @@
     </div>
     
     <div class ="tree-box">
-      <h3>Controls</h3>
-      Mutate<br/>
+      <h3><span style="font-family: monospace;">Mutation</span></h3>
     
       	<input type="reset" value="Clear" name="clear" />
       	<input type="submit" value="Mutate" name= "submit" />
       	
       	<div class="slidecontainer">
-      		<p>Mutation Rate:</p>
+      		<p><span style="font-family: monospace;">Mutation Rate:</span></p>
   			<input type="range" min="1" max="100" value="50" class="slider" id="mutRate" name="mutRate"> 
-  			<p>Transition/Transversion bias:</p>
+  			<p><span style="font-family: monospace;">Transition/Transversion bias:</span></p>
   			<input type="range" min="1" max="100" value="50" class="slider" id="trBias" name="trBias">
   		</div>
       	
