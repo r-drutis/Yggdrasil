@@ -248,6 +248,11 @@ public class FastaReader extends HttpServlet {
 	}
 
 	/**
+	 * Servlet doPost method
+	 * 
+	 * This is the main method which handles requests from other pages.
+	 * 
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
